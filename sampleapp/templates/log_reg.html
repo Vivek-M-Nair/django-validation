@@ -33,7 +33,7 @@
         -->
               <div class="heading">
                 <h3 id="log_heading" style="align-items:center;justify-content:  center;display: flex;"><b>LOGIN</b></h3>
-                <h3 id="reg_heading" style="align-items:center;justify-content:  center;display: none;"><b>REGISTER</b></h3>
+                <h3 id="reg_heading" style="align-items:center;justify-content:center;display: none;"><b>REGISTER</b></h3>
                 {% if messages %}
                   {% for message in messages %}
                 <p style="color:red">{{ message }}</p>
@@ -45,6 +45,9 @@
                 <div class="login" id="login">
                     <form method="POST">
                       {% csrf_token %}
+                        <div class="mb-3">
+                          <input type="hidden" name="form_type" value="login_form">
+                        </div>
                         <div class="mb-3">
                           <label for="inputusername_log" class="form-label">username</label>
                           <input type="text" class="form-control w-100" id="inputusername_log" aria-describedby="Username" name="username">
@@ -67,9 +70,13 @@
                               
 
                 <!--register-->
-                <div class="register" id="register" style="display: none;">
+                <div class="register {% if form_type == 'register_form' %}show{% else %}hide{% endif %}" id="register">
+
                     <form method="POST">
                       {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="hidden" name="form_type" value="register_form">
+                        </div>
                         <div class="mb-3">
                             <label for="Inputusername" class="form-label">Username</label>
                             <input type="text" class="form-control" id="inputusername" aria-describedby="username" name="username">
@@ -114,7 +121,7 @@
             }
             else
             {
-              let pattern= /^[A-Za-z0-9!@#$%^&*]*[A-Za-z0-9]+[A-Za-z0-9!@#$%^&*_]*$/;
+              let pattern= /^[A-Za-z0-9!@#$%^&*]+$/;
 
               let isUserNameValid = pattern.test(username)
               if(!isUserNameValid)
@@ -147,7 +154,7 @@
             }
             else
             {
-              let pattern= /^[A-Za-z0-9!@#$%^&*]*[A-Za-z0-9]+[A-Za-z0-9!@#$%^&*_]*$/;
+              let pattern= /^[A-Za-z0-9!@#$%^&*]+$/;
 
               let isUserNameValid = pattern.test(username)
               if(!isUserNameValid)
@@ -276,6 +283,28 @@
                 reg_heading.style.display="none";
             }
         </script>
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+              var formType = "{{ form_type }}";
+              var registerDiv = document.getElementById("register");
+              var loginDiv=document.getElementById("login");
+              var regheading=document.getElementById("reg_heading");
+              var logheading=document.getElementById("log_heading");
+        
+              if (formType === "register_form") {
+                  registerDiv.style.display = "block";
+                  loginDiv.style.display = "none";
+                  regheading.style.display = "flex";
+                  logheading.style.display = "none";
+              } else {
+                  registerDiv.style.display = "none";
+                  loginDiv.style.display = "block";
+                  regheading.style.display = "none";
+                  logheading.style.display = "flex";
+              }
+          });
+        </script>
+        
     </body>
     
 </html>
